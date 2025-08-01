@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KuikoART - Tienda</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            background-color: #f9f5ff;
+        }
+
+        .header-container {
+            background-color: #000;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        .header-container h1 {
+            color: white;
+            margin: 0;
+            font-size: 2.2rem;
+        }
+
+        /* Menú de navegación */
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-width: 800px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            background: #4b2a70;
+            padding: 0.7rem 1.2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* Filtros de categoría */
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 1rem;
+            background: #f0e6ff;
+            margin-bottom: 2rem;
+        }
+
+        .filtro-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #4b2a70;
+            border-radius: 20px;
+            background: white;
+            color: #4b2a70;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filtro-btn:hover, .filtro-btn.active {
+            background: #4b2a70;
+            color: white;
+        }
+
+        /* Grid de productos */
+        .productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .producto-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .producto-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .producto-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .producto-info {
+            padding: 1rem;
+        }
+
+        .producto-titulo {
+            font-size: 1.2rem;
+            margin: 0 0 0.5rem 0;
+            color: #4b2a70;
+        }
+
+        .producto-precio {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #2a0a4a;
+            margin: 0.5rem 0;
+        }
+
+        .metodo-pago {
+            font-size: 0.8rem;
+            color: #ff5722;
+            font-style: italic;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .producto-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0.5rem 0 1rem 0;
+        }
+
+        .producto-disponibilidad {
+            font-size: 0.8rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        .cantidad-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .cantidad-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: #f5f5f5;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .cantidad-input {
+            width: 50px;
+            height: 30px;
+            text-align: center;
+            border: 1px solid #ddd;
+            margin: 0 5px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.7rem;
+            background: #4b2a70;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #5d3a8a;
+        }
+
+        /* Carrito flotante */
+        .carrito-flotante {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #4b2a70;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        .carrito-icono {
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .carrito-contador {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff5722;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Modal del carrito */
+        .carrito-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carrito-contenido {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carrito-header {
+            background: #4b2a70;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .carrito-cerrar {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .carrito-body {
+            padding: 1rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .carrito-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .carrito-item-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .carrito-item-info {
+            flex-grow: 1;
+            padding: 0 1rem;
+        }
+
+        .carrito-item-titulo {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .carrito-item-precio {
+            color: #4b2a70;
+            font-weight: bold;
+        }
+
+        .carrito-item-eliminar {
+            background: none;
+            border: none;
+            color: #ff5722;
+            cursor: pointer;
+        }
+
+        .carrito-total {
+            padding: 1rem;
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-top: 2px solid #4b2a70;
+        }
+
+        .formulario-pedido {
+            padding: 1rem;
+            background: #f9f5ff;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        .domicilio-info {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .domicilio-link {
+            color: #4b2a70;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .domicilio-link:hover {
+            text-decoration: underline;
+        }
+
+        .botones-pedido {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .btn-pedido {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-email {
+            background: #4b2a70;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .productos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            nav a {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .productos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .carrito-contenido {
+                width: 95%;
+            }
+            
+            .botones-pedido {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn-pedido {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <h1>KuikoART</h1>
+    </div>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="tienda.html" class="active">Tienda</a></li>
+            <li><a href="talleres.html">Talleres</a></li>
+            <li><a href="historias.html">Historias de Vida</a></li>
+            <li><a href="catalogo.html">Catálogo</a></li>
+        </ul>
+    </nav>
+
+    <div class="filtros">
+        <button class="filtro-btn active" data-categoria="todos">Todos</button>
+        <button class="filtro-btn" data-categoria="arte">Arte y Artesanías</button>
+        <button class="filtro-btn" data-categoria="ropa">Ropa y Accesorios</button>
+        <button class="filtro-btn" data-categoria="hogar">Hogar y Decoración</button>
+        <button class="filtro-btn" data-categoria="talleres">Talleres</button>
+        <button class="filtro-btn" data-categoria="comida">Postres y Meriendas</button>
+    </div>
+
+    <div class="productos-grid">
+        <!-- Producto 1 -->
+        <div class="producto-card" data-categoria="arte">
+            <img src="img/cuadro1.jpg" alt="Cuadro abstracto" class="producto-img">
+            <div class="producto-info">
+                <h3 class="producto-titulo">Cuadro Abstracto "Sueños"</h3>
+                <p class="producto-precio">$120.00</p>
+                <p class="metodo-pago">Transferencia no disponible / Solo efectivo</p>
+                <p class="producto-desc">Pintura acrílica sobre lienzo, 40x60 cm</p>
+                <p class="producto-disponibilidad">Disponible: 5 unidades</p>
+                <div class="cantidad-selector">
+                    <button class="cantidad-btn minus">-</button>
+                    <input type="number" value="1" min="1" class="cantidad-input">
+                    <button class="cantidad-btn plus">+</button>
+                </div>
+                <button class="add-to-cart">Añadir al carrito</button>
+            </div>
+        </div>
+
+        <!-- Producto 2 -->
+        <div class="producto-card" data-categoria="ropa">
+            <img src="img/bolso1.jpg" alt="Bolso artesanal" class="producto-img">
+            <div class="producto-info">
+                <h3 class="producto-titulo">Bolso Artesanal "Esencia"</h3>
+                <p class="producto-precio">$85.00</p>
+                <p class="producto-desc">Hecho a mano con materiales naturales</p>
+                <p class="producto-disponibilidad">Disponible: 3 unidades</p>
+                <div class="cantidad-selector">
+                    <button class="cantidad-btn minus">-</button>
+                    <input type="number" value="1" min="1" class="cantidad-input">
+                    <button class="cantidad-btn plus">+</button>
+                </div>
+                <button class="add-to-cart">Añadir al carrito</button>
+            </div>
+        </div>
+
+        <!-- Producto 3 -->
+        <div class="producto-card" data-categoria="hogar">
+            <img src="img/vela1.jpg" alt="Vela aromática" class="producto-img">
+            <div class="producto-info">
+                <h3 class="producto-titulo">Vela Aromática "Lavanda"</h3>
+                <p class="producto-precio">$25.00</p>
+                <p class="producto-desc">Cera de soja con aceites esenciales</p>
+                <p class="producto-disponibilidad">Disponible: 10 unidades</p>
+                <div class="cantidad-selector">
+                    <button class="cantidad-btn minus">-</button>
+                    <input type="number" value="1" min="1" class="cantidad-input">
+                    <button class="cantidad-btn plus">+</button>
+                </div>
+                <button class="add-to-cart">Añadir al carrito</button>
+            </div>
+        </div>
+
+        <!-- Producto 4 -->
+        <div class="producto-card" data-categoria="talleres">
+            <img src="img/taller1.jpg" alt="Kit de taller" class="producto-img">
+            <div class="producto-info">
+                <h3 class="producto-titulo">Kit Taller de Cerámica</h3>
+                <p class="producto-precio">$65.00</p>
+                <p class="metodo-pago">Transferencia no disponible / Solo efectivo</p>
+                <p class="producto-desc">Todo lo necesario para comenzar</p>
+                <p class="producto-disponibilidad">Disponible: 8 unidades</p>
+                <div class="cantidad-selector">
+                    <button class="cantidad-btn minus">-</button>
+                    <input type="number" value="1" min="1" class="cantidad-input">
+                    <button class="cantidad-btn plus">+</button>
+                </div>
+                <button class="add-to-cart">Añadir al carrito</button>
+            </div>
+        </div>
+
+        <!-- Producto 5 -->
+        <div class="producto-card" data-categoria="comida">
+            <img src="img/postre1.jpg" alt="Postre artesanal" class="producto-img">
+            <div class="producto-info">
+                <h3 class="producto-titulo">Caja de Dulces "Tentación"</h3>
+                <p class="producto-precio">$35.00</p>
+                <p class="producto-desc">Selección de 12 dulces artesanales</p>
+                <p class="producto-disponibilidad">Disponible: 6 unidades</p>
+                <div class="cantidad-selector">
+                    <button class="cantidad-btn minus">-</button>
+                    <input type="number" value="1" min="1" class="cantidad-input">
+                    <button class="cantidad-btn plus">+</button>
+                </div>
+                <button class="add-to-cart">Añadir al carrito</button>
+            </div>
+        </div>
+
+        <!-- Producto 6 -->
+        <div class="producto-card" data-categoria="arte">
+            <img src="img/joya1.jpg" alt="Joyería artesanal" class="producto-img">
+            <div class="producto-info">
+                <h3 class="producto-titulo">Collar "Armonía"</h3>
+                <p class="producto-precio">$45.00</p>
+                <p class="producto-desc">Joyería artesanal en plata y piedras</p>
+                <p class="producto-disponibilidad">Disponible: 4 unidades</p>
+                <div class="cantidad-selector">
+                    <button class="cantidad-btn minus">-</button>
+                    <input type="number" value="1" min="1" class="cantidad-input">
+                    <button class="cantidad-btn plus">+</button>
+                </div>
+                <button class="add-to-cart">Añadir al carrito</button>
+            </div>
+        </div>
+
+        <!-- NUEVO PRODUCTO: Pack de Panquecitos -->
+        <div class="producto-card" data-categoria="comida">
+            <img src="img/panquecitos.jpg" alt="Pack de panquecitos" class="producto-img">
+            <div class="producto-info">
+                <h3 class="producto-titulo">Pack de Panquecitos</h3>
+                <p class="producto-precio">$400.00 CUP</p>
+                <p class="producto-desc">Deliciosos panquecitos caseros, pack de 10 unidades</p>
+                <p class="producto-disponibilidad">Disponible: 15 unidades</p>
+                <div class="cantidad-selector">
+                    <button class="cantidad-btn minus">-</button>
+                    <input type="number" value="1" min="1" class="cantidad-input">
+                    <button class="cantidad-btn plus">+</button>
+                </div>
+                <button class="add-to-cart">Añadir al carrito</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrito flotante -->
+    <div class="carrito-flotante" id="carritoBtn">
+        <div class="carrito-icono">
+            🛒
+            <span class="carrito-contador">0</span>
+        </div>
+    </div>
+
+    <!-- Modal del carrito -->
+    <div class="carrito-modal" id="carritoModal">
+        <div class="carrito-contenido">
+            <div class="carrito-header">
+                <h2>Tu Carrito</h2>
+                <button class="carrito-cerrar" id="cerrarCarrito">&times;</button>
+            </div>
+            <div class="carrito-body" id="carritoItems">
+                <!-- Los items del carrito se agregarán aquí dinámicamente -->
+            </div>
+            <div class="carrito-total">
+                Total: <span id="carritoTotal">$0.00</span>
+            </div>
+            <div class="formulario-pedido">
+                <h3>Información del Cliente</h3>
+                <div class="form-group">
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" id="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="ci">Carnet de Identidad</label>
+                    <input type="text" id="ci" required>
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección</label>
+                    <input type="text" id="direccion" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Número de Móvil</label>
+                    <input type="tel" id="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email">
+                </div>
+                
+                <!-- Nuevos campos agregados -->
+                <div class="form-group">
+                    <label for="metodo-pago">Método de Pago</label>
+                    <select id="metodo-pago" required>
+                        <option value="">Seleccione un método</option>
+                        <option value="efectivo">Efectivo</option>
+                        <option value="transferencia">Transferencia</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="domicilio">Servicio de Domicilio</label>
+                    <select id="domicilio" required>
+                        <option value="no">No, gracias</option>
+                        <option value="si">Sí, por favor</option>
+                    </select>
+                </div>
+                
+                <div class="domicilio-info" id="domicilioInfo" style="display: none;">
+                    <p>Precio según la zona. <a href="precios-domicilio.pdf" class="domicilio-link" download>Descargar lista de precios</a></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notas">Notas adicionales</label>
+                    <textarea id="notas" rows="3"></textarea>
+                </div>
+                
+                <div class="botones-pedido">
+                    <button class="btn-pedido btn-whatsapp" id="enviarWhatsapp">Enviar por WhatsApp</button>
+                    <button class="btn-pedido btn-email" id="enviarEmail">Enviar por Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let carrito = [];
+        
+        // DOM Elements
+        const carritoBtn = document.getElementById('carritoBtn');
+        const carritoModal = document.getElementById('carritoModal');
+        const cerrarCarrito = document.getElementById('cerrarCarrito');
+        const carritoItems = document.getElementById('carritoItems');
+        const carritoTotal = document.getElementById('carritoTotal');
+        const contadorCarrito = document.querySelector('.carrito-contador');
+        const filtroBtns = document.querySelectorAll('.filtro-btn');
+        const productos = document.querySelectorAll('.producto-card');
+        const addToCartBtns = document.querySelectorAll('.add-to-cart');
+        const enviarWhatsapp = document.getElementById('enviarWhatsapp');
+        const enviarEmail = document.getElementById('enviarEmail');
+        const domicilioSelect = document.getElementById('domicilio');
+        const domicilioInfo = document.getElementById('domicilioInfo');
+
+        // Mostrar/ocultar info de domicilio
+        domicilioSelect.addEventListener('change', function() {
+            if(this.value === 'si') {
+                domicilioInfo.style.display = 'block';
+            } else {
+                domicilioInfo.style.display = 'none';
+            }
+        });
+
+        // Event Listeners
+        carritoBtn.addEventListener('click', abrirCarrito);
+        cerrarCarrito.addEventListener('click', cerrarModal);
+        
+        // Filtrar productos
+        filtroBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remover clase active de todos los botones
+                filtroBtns.forEach(b => b.classList.remove('active'));
+                // Añadir clase active al botón clickeado
+                btn.classList.add('active');
+                
+                const categoria = btn.dataset.categoria;
+                
+                productos.forEach(producto => {
+                    if (categoria === 'todos' || producto.dataset.categoria === categoria) {
+                        producto.style.display = 'block';
+                    } else {
+                        producto.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Selector de cantidad
+        productos.forEach(producto => {
+            const minusBtn = producto.querySelector('.minus');
+            const plusBtn = producto.querySelector('.plus');
+            const cantidadInput = producto.querySelector('.cantidad-input');
+            
+            minusBtn.addEventListener('click', () => {
+                let value = parseInt(cantidadInput.value);
+                if (value > 1) {
+                    cantidadInput.value = value - 1;
+                }
+            });
+            
+            plusBtn.addEventListener('click', () => {
+                let value = parseInt(cantidadInput.value);
+                cantidadInput.value = value + 1;
+            });
+        });
+        
+        // Añadir al carrito
+        addToCartBtns.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                const producto = btn.closest('.producto-card');
+                const titulo = producto.querySelector('.producto-titulo').textContent;
+                const precio = parseFloat(producto.querySelector('.producto-precio').textContent.replace('$', ''));
+                const cantidad = parseInt(producto.querySelector('.cantidad-input').value);
+                const imagen = producto.querySelector('.producto-img').src;
+                
+                // Verificar si el producto ya está en el carrito
+                const productoExistente = carrito.find(item => item.titulo === titulo);
+                
+                if (productoExistente) {
+                    productoExistente.cantidad += cantidad;
+                } else {
+                    carrito.push({
+                        titulo,
+                        precio,
+                        cantidad,
+                        imagen
+                    });
+                }
+                
+                actualizarCarrito();
+                mostrarNotificacion(`${titulo} añadido al carrito`);
+            });
+        });
+        
+        // Funciones
+        function abrirCarrito() {
+            carritoModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function cerrarModal() {
+            carritoModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        function actualizarCarrito() {
+            carritoItems.innerHTML = '';
+            let total = 0;
+            
+            carrito.forEach((item, index) => {
+                const subtotal = item.precio * item.cantidad;
+                total += subtotal;
+                
+                const itemHTML = `
+                    <div class="carrito-item">
+                        <img src="${item.imagen}" alt="${item.titulo}" class="carrito-item-img">
+                        <div class="carrito-item-info">
+                            <div class="carrito-item-titulo">${item.titulo}</div>
+                            <div class="carrito-item-precio">$${item.precio.toFixed(2)} x ${item.cantidad} = $${subtotal.toFixed(2)}</div>
+                        </div>
+                        <button class="carrito-item-eliminar" data-index="${index}">🗑️</button>
+                    </div>
+                `;
+                
+                carritoItems.innerHTML += itemHTML;
+            });
+            
+            // Añadir event listeners a los botones de eliminar
+            document.querySelectorAll('.carrito-item-eliminar').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const index = parseInt(btn.dataset.index);
+                    carrito.splice(index, 1);
+                    actualizarCarrito();
+                });
+            });
+            
+            carritoTotal.textContent = `$${total.toFixed(2)}`;
+            contadorCarrito.textContent = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+        }
+        
+        function mostrarNotificacion(mensaje) {
+            const notificacion = document.createElement('div');
+            notificacion.style.position = 'fixed';
+            notificacion.style.bottom = '20px';
+            notificacion.style.left = '50%';
+            notificacion.style.transform = 'translateX(-50%)';
+            notificacion.style.backgroundColor = '#4b2a70';
+            notificacion.style.color = 'white';
+            notificacion.style.padding = '10px 20px';
+            notificacion.style.borderRadius = '5px';
+            notificacion.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
+            notificacion.style.zIndex = '1000';
+            notificacion.textContent = mensaje;
+            
+            document.body.appendChild(notificacion);
+            
+            setTimeout(() => {
+                notificacion.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notificacion);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Enviar pedido por WhatsApp
+        enviarWhatsapp.addEventListener('click', () => {
+            if (carrito.length === 0) {
+                alert('El carrito está vacío');
+                return;
+            }
+            
+            const nombre = document.getElementById('nombre').value;
+            const ci = document.getElementById('ci').value;
+            const direccion = document.getElementById('direccion').value;
+            const telefono = document.getElementById('telefono').value;
+            const email = document.getElementById('email').value;
+            const metodoPago = document.getElementById('metodo-pago').value;
+            const domicilio = document.getElementById('domicilio').value;
+            const notas = document.getElementById('notas').value;
+            
+            if (!nombre || !ci || !direccion || !telefono || !metodoPago) {
+                alert('Por favor complete todos los campos requeridos');
+                return;
+            }
+            
+            let mensaje = `*Nuevo Pedido KuikoART*%0A%0A`;
+            mensaje += `*Cliente:* ${nombre}%0A`;
+            mensaje += `*CI:* ${ci}%0A`;
+            mensaje += `*Dirección:* ${direccion}%0A`;
+            mensaje += `*Teléfono:* ${telefono}%0A`;
+            if (email) mensaje += `*Email:* ${email}%0A`;
+            mensaje += `*Método de Pago:* ${metodoPago === 'efectivo' ? 'Efectivo' : 'Transferencia'}%0A`;
+            mensaje += `*Domicilio:* ${domicilio === 'si' ? 'Sí' : 'No'}%0A`;
+            if (notas) mensaje += `*Notas:* ${notas}%0A%0A`;
+            
+            mensaje += `*Pedido:*%0A`;
+            carrito.forEach(item => {
+                mensaje += `- ${item.titulo} (${item.cantidad} x $${item.precio.toFixed(2)}) = $${(item.cantidad * item.precio).toFixed(2)}%0A`;
+            });
+            
+            mensaje += `%0A*Total:* $${carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0).toFixed(2)}`;
+            
+            window.open(`https://wa.me/5353086152?text=${mensaje}`, '_blank');
+        });
+        
+        // Enviar pedido por Email (simulado)
+        enviarEmail.addEventListener('click', () => {
+            if (carrito.length === 0) {
+                alert('El carrito está vacío');
+                return;
+            }
+            
+            const nombre = document.getElementById('nombre').value;
+            const ci = document.getElementById('ci').value;
+            const direccion = document.getElementById('direccion').value;
+            const telefono = document.getElementById('telefono').value;
+            const email = document.getElementById('email').value;
+            const metodoPago = document.getElementById('metodo-pago').value;
+            const domicilio = document.getElementById('domicilio').value;
+            const notas = document.getElementById('notas').value;
+            
+            if (!nombre || !ci || !direccion || !telefono || !metodoPago) {
+                alert('Por favor complete todos los campos requeridos');
+                return;
+            }
+            
+            let mensaje = `Nuevo Pedido KuikoART\n\n`;
+            mensaje += `Cliente: ${nombre}\n`;
+            mensaje += `CI: ${ci}\n`;
+            mensaje += `Dirección: ${direccion}\n`;
+            mensaje += `Teléfono: ${telefono}\n`;
+            if (email) mensaje += `Email: ${email}\n`;
+            mensaje += `Método de Pago: ${metodoPago === 'efectivo' ? 'Efectivo' : 'Transferencia'}\n`;
+            mensaje += `Domicilio: ${domicilio === 'si' ? 'Sí' : 'No'}\n`;
+            if (notas) mensaje += `Notas: ${notas}\n\n`;
+            
+            mensaje += `Pedido:\n`;
+            carrito.forEach(item => {
+                mensaje += `- ${item.titulo} (${item.cantidad} x $${item.precio.toFixed(2)}) = $${(item.cantidad * item.precio).toFixed(2)}\n`;
+            });
+            
+            mensaje += `\nTotal: $${carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0).toFixed(2)}`;
+            
+            // Simular envío por email (en producción usar un servicio real)
+            const mailtoLink = `mailto:cmfaponte@gmail.com?subject=Nuevo Pedido KuikoART - ${nombre}&body=${encodeURIComponent(mensaje)}`;
+            window.location.href = mailtoLink;
+        });
+        
+        // Cerrar modal al hacer clic fuera
+        window.addEventListener('click', (e) => {
+            if (e.target === carritoModal) {
+                cerrarModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KuikoART - Catálogo Interactivo</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Estilos para el encabezado */
+        .header-container {
+            background-color: #000;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        .header-container h1 {
+            color: white;
+            margin: 0;
+            font-size: 2.2rem;
+        }
+
+        /* Estilos para el menú */
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-width: 800px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            background: #4b2a70;
+            padding: 0.7rem 1.2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+            text-align: center;
+            white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+        }
+
+        nav a:hover {
+            background: #5d3a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        nav a.active {
+            background: #3a1a56;
+        }
+
+        /* Resto de estilos (se mantienen igual) */
+        .fondo-artistico {
+            background: url('img/fondo-textura.jpg') no-repeat center center fixed;
+            background-size: cover;
+            padding: 2rem;
+            border-radius: 15px;
+            position: relative;
+            min-height: 80vh;
+        }
+
+        .fondo-artistico::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            z-index: -1;
+        }
+
+        .catalogo-intro {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .catalogo-intro h2 {
+            color: #4b2a70;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .catalogo-intro p {
+            font-size: 1.2rem;
+            margin-top: 0;
+        }
+
+        .categorias {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tecnica {
+            margin-bottom: 15px;
+        }
+
+        .toggle {
+            display: none;
+        }
+
+        .tecnica-titulo {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 1px;
+            position: relative;
+            padding: 1rem 1.5rem;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            background: #4b2a70;
+            border-radius: 25px;
+            margin-bottom: 0;
+            border: none;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+        }
+
+        .tecnica-titulo:hover {
+            background: #5d3a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .tecnica-titulo::after {
+            content: "▶";
+            position: absolute;
+            right: 20px;
+            transition: transform 0.3s;
+        }
+
+        .toggle:checked + .tecnica-titulo::after {
+            transform: rotate(90deg);
+        }
+
+        .icono {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .tecnica-contenido {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 0 0 10px 10px;
+            padding: 0;
+            margin-top: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+        }
+
+        .toggle:checked ~ .tecnica-contenido {
+            max-height: 2000px;
+            padding: 1.5rem;
+            margin-top: 5px;
+        }
+
+        .descripcion {
+            margin-bottom: 1.5rem;
+        }
+
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .galeria img {
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .galeria img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .creador {
+            background: white;
+            border: 1px solid #e0d0f0;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .creador p {
+            margin: 0 0 10px 0;
+            font-weight: bold;
+            color: #4b2a70;
+        }
+
+        .creador a {
+            color: #4b2a70;
+            text-decoration: none;
+            margin: 3px 0;
+            transition: color 0.3s;
+        }
+
+        .creador a:hover {
+            color: #5d3a8a;
+            text-decoration: underline;
+        }
+
+        .boton-contacto {
+            background: #4b2a70;
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            display: inline-block;
+            text-decoration: none !important;
+        }
+
+        .boton-contacto:hover {
+            background: #5d3a8a;
+        }
+
+        .contacto {
+            background: #4b2a70;
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .contacto h3 {
+            margin-top: 0;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .contacto ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .contacto a {
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .contacto a:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f5f5f5;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .galeria {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 5px;
+                padding: 0 10px;
+            }
+            
+            nav a {
+                width: auto;
+                margin-bottom: 5px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+                flex: 1 1 calc(50% - 10px); /* Dos elementos por fila */
+                min-width: 0; /* Permite que los botones se ajusten */
+                box-sizing: border-box;
+            }
+            
+            /* Ajuste especial para el botón "Historias de Vida" */
+            nav a[href="historias.html"] {
+                font-size: 0.8rem; /* Tamaño ligeramente más pequeño */
+                padding: 0.6rem 0.5rem;
+            }
+            
+            .catalogo-intro h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav a {
+                font-size: 0.85rem;
+                padding: 0.6rem 0.8rem;
+            }
+            
+            nav a[href="historias.html"] {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <h1>KuikoART</h1>
+    </div>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="tienda.html">Tienda</a></li>
+            <li><a href="talleres.html">Talleres</a></li>
+            <li><a href="historias.html">Historias de Vida</a></li>
+            <li><a href="catalogo.html" class="active">Catálogo</a></li>
+        </ul>
+    </nav>
+
+    <!-- Resto del contenido HTML se mantiene igual -->
+    <main class="fondo-artistico">
+        <section class="catalogo-intro">
+            <h2>Catálogo</h2>
+            <p>Explora nuestras técnicas artesanales. <span style="font-weight:bold;color:#4b2a70;">¡Cada una tiene su magia!</span></p>
+        </section>
+
+        <section class="categorias">
+            <!-- Filigrana de Papel -->
+            <div class="tecnica">
+                <input type="checkbox" id="toggle-filigrana" class="toggle">
+                <label for="toggle-filigrana" class="tecnica-titulo">
+                    <span class="icono">✂️</span> Filigrana de Papel
+                </label>
+                <div class="tecnica-contenido">
+                    <p class="descripcion">Arte ancestral que transforma tiras de papel en delicadas esculturas. Ideal para decoración y joyería.</p>
+                    <div class="galeria">
+                        <img src="img/filigrana1.jpg" alt="Diseño floral en filigrana">
+                        <img src="img/filigrana2.jpg" alt="Marco decorativo">
+                        <img src="img/filigrana3.jpg" alt="Joyería en papel">
+                    </div>
+                    <div class="creador">
+                        <p>👩‍🎨 <strong>Ana Martínez</strong></p>
+                        <a href="https://instagram.com/ana_filigrana">@ana_filigrana</a>
+                        <a href="mailto:ana@kuikoart.com" class="boton-contacto">Contactar al artista</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Foamy -->
+            <div class="tecnica">
+                <input type="checkbox" id="toggle-foamy" class="toggle">
+                <label for="toggle-foamy" class="tecnica-titulo">
+                    <span class="icono">🎨</span> Foamy
+                </label>
+                <div class="tecnica-contenido">
+                    <p class="descripcion">Material versátil para crear figuras coloridas y resistentes. Perfecto para manualidades infantiles y decoración.</p>
+                    <div class="galeria">
+                        <img src="img/foamy1.jpg" alt="Figuras infantiles">
+                        <img src="img/foamy2.jpg" alt="Portarretratos">
+                        <img src="img/foamy3.jpg" alt="Decoración infantil">
+                    </div>
+                    <div class="creador">
+                        <p>👨‍🎨 <strong>Carlos Rodríguez</strong></p>
+                        <a href="https://instagram.com/carlos_foamy">@carlos_foamy</a>
+                        <a href="mailto:carlos@kuikoart.com" class="boton-contacto">Contactar al artista</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cerámica Fría -->
+            <div class="tecnica">
+                <input type="checkbox" id="toggle-ceramica" class="toggle">
+                <label for="toggle-ceramica" class="tecnica-titulo">
+                    <span class="icono">🖌️</span> Cerámica Fría
+                </label>
+                <div class="tecnica-contenido">
+                    <p class="descripcion">Esculturas y joyas hechas con masa moldeable que no requiere horno. Duraderas y llenas de detalles.</p>
+                    <div class="galeria">
+                        <img src="img/ceramica1.jpg" alt="Figuras decorativas">
+                        <img src="img/ceramica2.jpg" alt="Joyería artesanal">
+                        <img src="img/ceramica3.jpg" alt="Escultura moderna">
+                    </div>
+                    <div class="creador">
+                        <p>👩‍🎨 <strong>María González</strong></p>
+                        <a href="https://instagram.com/maria_ceramica">@maria_ceramica</a>
+                        <a href="mailto:maria@kuikoart.com" class="boton-contacto">Contactar al artista</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resina Epóxica -->
+            <div class="tecnica">
+                <input type="checkbox" id="toggle-resina" class="toggle">
+                <label for="toggle-resina" class="tecnica-titulo">
+                    <span class="icono">💎</span> Resina Epóxica
+                </label>
+                <div class="tecnica-contenido">
+                    <p class="descripcion">Técnica moderna para piezas brillantes y personalizadas. Desde cuadros hasta accesorios únicos.</p>
+                    <div class="galeria">
+                        <img src="img/resina1.jpg" alt="Cuadros abstractos">
+                        <img src="img/resina2.jpg" alt="Llaveros">
+                        <img src="img/resina3.jpg" alt="Bandejas decorativas">
+                    </div>
+                    <div class="creador">
+                        <p>👨‍🎨 <strong>Luis Fernández</strong></p>
+                        <a href="https://instagram.com/luis_resina">@luis_resina</a>
+                        <a href="mailto:luis@kuikoart.com" class="boton-contacto">Contactar al artista</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contacto">
+            <h3>¿Te interesa alguna técnica o producto?</h3>
+            <p>Contáctanos directamente:</p>
+            <ul>
+                <li>
+                    <a href="mailto:cmfaponte@gmail.com">
+                        ✉️ cmfaponte@gmail.com
+                    </a>
+                </li>
+                <li>
+                    <a href="https://wa.me/5353086152">
+                        📱 WhatsApp +53 53086152
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2023 KuikoART - Transformamos espacios con arte</p>
+    </footer>
+
+    <script>
+        // Cierra automáticamente las otras técnicas al abrir una
+        document.querySelectorAll('.toggle').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                if(this.checked) {
+                    document.querySelectorAll('.toggle').forEach(otherToggle => {
+                        if(otherToggle !== this) {
+                            otherToggle.checked = false;
+                            otherToggle.dispatchEvent(new Event('change'));
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
