@@ -594,19 +594,19 @@
                 <h3>Información del Cliente</h3>
                 <div class="form-group">
                     <label for="nombre">Nombre completo</label>
-                    <input type="text" id="nombre" required>
+                    <input type="text" id="nombre">
                 </div>
                 <div class="form-group">
                     <label for="ci">Carnet de Identidad</label>
-                    <input type="text" id="ci" required>
+                    <input type="text" id="ci">
                 </div>
                 <div class="form-group">
                     <label for="direccion">Dirección</label>
-                    <input type="text" id="direccion" required>
+                    <input type="text" id="direccion">
                 </div>
                 <div class="form-group">
                     <label for="telefono">Número de Móvil</label>
-                    <input type="tel" id="telefono" required>
+                    <input type="tel" id="telefono">
                 </div>
                 <div class="form-group">
                     <label for="email">Correo electrónico</label>
@@ -616,7 +616,7 @@
                 <!-- Nuevos campos agregados -->
                 <div class="form-group">
                     <label for="metodo-pago">Método de Pago</label>
-                    <select id="metodo-pago" required>
+                    <select id="metodo-pago">
                         <option value="">Seleccione un método</option>
                         <option value="efectivo">Efectivo</option>
                         <option value="transferencia">Transferencia</option>
@@ -625,7 +625,7 @@
                 
                 <div class="form-group">
                     <label for="domicilio">Servicio de Domicilio</label>
-                    <select id="domicilio" required>
+                    <select id="domicilio">
                         <option value="no">No, gracias</option>
                         <option value="si">Sí, por favor</option>
                     </select>
@@ -641,7 +641,7 @@
                 </div>
                 
                 <div class="botones-pedido">
-                    <button class="btn-pedido btn-whatsapp" id="enviarWhatsapp">Enviar por WhatsApp</button>
+                    <button class="btn-pedido btn-whatsapp" id="enviarWhatsapp">Enviar por WhatsApp #ART-001</button>
                     <button class="btn-pedido btn-email" id="enviarEmail">Enviar por Email</button>
                 </div>
             </div>
@@ -743,7 +743,7 @@
                 }
                 
                 actualizarCarrito();
-                mostrarNotificacion(`${titulo} añadido al carrito`);
+                mostrarNotificacion(`${titulo} añadido al carrito #ART-${Math.floor(100 + Math.random() * 900)}`);
             });
         });
         
@@ -824,29 +824,24 @@
                 return;
             }
             
-            const nombre = document.getElementById('nombre').value;
-            const ci = document.getElementById('ci').value;
-            const direccion = document.getElementById('direccion').value;
-            const telefono = document.getElementById('telefono').value;
-            const email = document.getElementById('email').value;
-            const metodoPago = document.getElementById('metodo-pago').value;
-            const domicilio = document.getElementById('domicilio').value;
-            const notas = document.getElementById('notas').value;
-            
-            if (!nombre || !ci || !direccion || !telefono || !metodoPago) {
-                alert('Por favor complete todos los campos requeridos');
-                return;
-            }
+            const nombre = document.getElementById('nombre').value || 'No especificado';
+            const ci = document.getElementById('ci').value || 'No especificado';
+            const direccion = document.getElementById('direccion').value || 'No especificado';
+            const telefono = document.getElementById('telefono').value || 'No especificado';
+            const email = document.getElementById('email').value || 'No especificado';
+            const metodoPago = document.getElementById('metodo-pago').value || 'No especificado';
+            const domicilio = document.getElementById('domicilio').value || 'No especificado';
+            const notas = document.getElementById('notas').value || 'No hay notas adicionales';
             
             let mensaje = `*Nuevo Pedido KuikoART*%0A%0A`;
             mensaje += `*Cliente:* ${nombre}%0A`;
             mensaje += `*CI:* ${ci}%0A`;
             mensaje += `*Dirección:* ${direccion}%0A`;
             mensaje += `*Teléfono:* ${telefono}%0A`;
-            if (email) mensaje += `*Email:* ${email}%0A`;
-            mensaje += `*Método de Pago:* ${metodoPago === 'efectivo' ? 'Efectivo' : 'Transferencia'}%0A`;
+            mensaje += `*Email:* ${email}%0A`;
+            mensaje += `*Método de Pago:* ${metodoPago === 'efectivo' ? 'Efectivo' : (metodoPago === 'transferencia' ? 'Transferencia' : 'No especificado')}%0A`;
             mensaje += `*Domicilio:* ${domicilio === 'si' ? 'Sí' : 'No'}%0A`;
-            if (notas) mensaje += `*Notas:* ${notas}%0A%0A`;
+            mensaje += `*Notas:* ${notas}%0A%0A`;
             
             mensaje += `*Pedido:*%0A`;
             carrito.forEach(item => {
@@ -854,6 +849,7 @@
             });
             
             mensaje += `%0A*Total:* $${carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0).toFixed(2)}`;
+            mensaje += `%0A%0A*ID del Pedido:* #ART-${Math.floor(100 + Math.random() * 900)}`;
             
             window.open(`https://wa.me/5353086152?text=${mensaje}`, '_blank');
         });
@@ -865,29 +861,24 @@
                 return;
             }
             
-            const nombre = document.getElementById('nombre').value;
-            const ci = document.getElementById('ci').value;
-            const direccion = document.getElementById('direccion').value;
-            const telefono = document.getElementById('telefono').value;
-            const email = document.getElementById('email').value;
-            const metodoPago = document.getElementById('metodo-pago').value;
-            const domicilio = document.getElementById('domicilio').value;
-            const notas = document.getElementById('notas').value;
-            
-            if (!nombre || !ci || !direccion || !telefono || !metodoPago) {
-                alert('Por favor complete todos los campos requeridos');
-                return;
-            }
+            const nombre = document.getElementById('nombre').value || 'No especificado';
+            const ci = document.getElementById('ci').value || 'No especificado';
+            const direccion = document.getElementById('direccion').value || 'No especificado';
+            const telefono = document.getElementById('telefono').value || 'No especificado';
+            const email = document.getElementById('email').value || 'No especificado';
+            const metodoPago = document.getElementById('metodo-pago').value || 'No especificado';
+            const domicilio = document.getElementById('domicilio').value || 'No especificado';
+            const notas = document.getElementById('notas').value || 'No hay notas adicionales';
             
             let mensaje = `Nuevo Pedido KuikoART\n\n`;
             mensaje += `Cliente: ${nombre}\n`;
             mensaje += `CI: ${ci}\n`;
             mensaje += `Dirección: ${direccion}\n`;
             mensaje += `Teléfono: ${telefono}\n`;
-            if (email) mensaje += `Email: ${email}\n`;
-            mensaje += `Método de Pago: ${metodoPago === 'efectivo' ? 'Efectivo' : 'Transferencia'}\n`;
+            mensaje += `Email: ${email}\n`;
+            mensaje += `Método de Pago: ${metodoPago === 'efectivo' ? 'Efectivo' : (metodoPago === 'transferencia' ? 'Transferencia' : 'No especificado')}\n`;
             mensaje += `Domicilio: ${domicilio === 'si' ? 'Sí' : 'No'}\n`;
-            if (notas) mensaje += `Notas: ${notas}\n\n`;
+            mensaje += `Notas: ${notas}\n\n`;
             
             mensaje += `Pedido:\n`;
             carrito.forEach(item => {
@@ -895,6 +886,7 @@
             });
             
             mensaje += `\nTotal: $${carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0).toFixed(2)}`;
+            mensaje += `\n\nID del Pedido: #ART-${Math.floor(100 + Math.random() * 900)}`;
             
             // Simular envío por email (en producción usar un servicio real)
             const mailtoLink = `mailto:cmfaponte@gmail.com?subject=Nuevo Pedido KuikoART - ${nombre}&body=${encodeURIComponent(mensaje)}`;
@@ -909,4 +901,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
