@@ -200,11 +200,52 @@
             width: 100%;
             height: 200px;
             object-fit: cover;
+            cursor: pointer;
         }
 
         .galeria img:hover {
             transform: scale(1.03);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Modal para imágenes ampliadas */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            max-height: 80vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #bbb;
         }
 
         .creador {
@@ -329,6 +370,10 @@
             .catalogo-intro h2 {
                 font-size: 2rem;
             }
+
+            .modal-content {
+                width: 95%;
+            }
         }
 
         @media (max-width: 480px) {
@@ -358,7 +403,12 @@
         </ul>
     </nav>
 
-    <!-- Resto del contenido HTML se mantiene igual -->
+    <!-- Modal para imágenes ampliadas -->
+    <div id="imagenModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="imagenAmpliada">
+    </div>
+
     <main class="fondo-artistico">
         <section class="catalogo-intro">
             <h2>Catálogo</h2>
@@ -375,14 +425,14 @@
                 <div class="tecnica-contenido">
                     <p class="descripcion">Arte ancestral que transforma tiras de papel en delicadas esculturas. Ideal para decoración y joyería.</p>
                     <div class="galeria">
-                        <img src="img/filigrana1.jpg" alt="Diseño floral en filigrana">
-                        <img src="img/filigrana2.jpg" alt="Marco decorativo">
-                        <img src="img/filigrana3.jpg" alt="Joyería en papel">
+                        <img src="img/filigrana1.jpg" alt="Diseño floral en filigrana" onclick="ampliarImagen(this)">
+                        <img src="img/filigrana2.jpg" alt="Marco decorativo" onclick="ampliarImagen(this)">
+                        <img src="img/filigrana3.jpg" alt="Joyería en papel" onclick="ampliarImagen(this)">
                     </div>
                     <div class="creador">
-                        <p>👩‍🎨 <strong>Ana Martínez</strong></p>
-                        <a href="https://instagram.com/ana_filigrana">@ana_filigrana</a>
-                        <a href="mailto:ana@kuikoart.com" class="boton-contacto">Contactar al artista</a>
+                        <p>👨‍🎨 <strong>Héctor M.</strong></p>
+                        <a href="https://www.facebook.com/hector.aponte.avila.2025">Facebook del artista</a>
+                        <a href="https://www.facebook.com/hector.aponte.avila.2025" class="boton-contacto">Contactar al artista</a>
                     </div>
                 </div>
             </div>
@@ -396,14 +446,16 @@
                 <div class="tecnica-contenido">
                     <p class="descripcion">Material versátil para crear figuras coloridas y resistentes. Perfecto para manualidades infantiles y decoración.</p>
                     <div class="galeria">
-                        <img src="img/foamy1.jpg" alt="Figuras infantiles">
-                        <img src="img/foamy2.jpg" alt="Portarretratos">
-                        <img src="img/foamy3.jpg" alt="Decoración infantil">
+                        <img src="img/foamy1.jpg" alt="Figuras infantiles" onclick="ampliarImagen(this)">
+                        <img src="img/foamy2.jpg" alt="Portarretratos" onclick="ampliarImagen(this)">
+                        <img src="img/foamy3.jpg" alt="Decoración infantil" onclick="ampliarImagen(this)">
                     </div>
                     <div class="creador">
-                        <p>👨‍🎨 <strong>Carlos Rodríguez</strong></p>
-                        <a href="https://instagram.com/carlos_foamy">@carlos_foamy</a>
-                        <a href="mailto:carlos@kuikoart.com" class="boton-contacto">Contactar al artista</a>
+                        <p>👩‍🎨 <strong>ART-LIA</strong></p>
+                        <a href="https://www.facebook.com/art.lia.2025">Facebook de la artista</a>
+                        <p>👩‍🎨 <strong>Amalia</strong></p>
+                        <a href="https://www.facebook.com/lo.de.amalia.2023">Facebook de la artista</a>
+                        <a href="https://www.facebook.com/art.lia.2025" class="boton-contacto">Contactar a las artistas</a>
                     </div>
                 </div>
             </div>
@@ -417,14 +469,14 @@
                 <div class="tecnica-contenido">
                     <p class="descripcion">Esculturas y joyas hechas con masa moldeable que no requiere horno. Duraderas y llenas de detalles.</p>
                     <div class="galeria">
-                        <img src="img/ceramica1.jpg" alt="Figuras decorativas">
-                        <img src="img/ceramica2.jpg" alt="Joyería artesanal">
-                        <img src="img/ceramica3.jpg" alt="Escultura moderna">
+                        <img src="img/ceramica1.jpg" alt="Figuras decorativas" onclick="ampliarImagen(this)">
+                        <img src="img/ceramica2.jpg" alt="Joyería artesanal" onclick="ampliarImagen(this)">
+                        <img src="img/ceramica3.jpg" alt="Escultura moderna" onclick="ampliarImagen(this)">
                     </div>
                     <div class="creador">
-                        <p>👩‍🎨 <strong>María González</strong></p>
-                        <a href="https://instagram.com/maria_ceramica">@maria_ceramica</a>
-                        <a href="mailto:maria@kuikoart.com" class="boton-contacto">Contactar al artista</a>
+                        <p>👨‍🎨 <strong>REISEL HUGO</strong></p>
+                        <a href="https://www.facebook.com/art.lia.2025">Facebook del artista</a>
+                        <a href="https://www.facebook.com/art.lia.2025" class="boton-contacto">Contactar al artista</a>
                     </div>
                 </div>
             </div>
@@ -438,14 +490,14 @@
                 <div class="tecnica-contenido">
                     <p class="descripcion">Técnica moderna para piezas brillantes y personalizadas. Desde cuadros hasta accesorios únicos.</p>
                     <div class="galeria">
-                        <img src="img/resina1.jpg" alt="Cuadros abstractos">
-                        <img src="img/resina2.jpg" alt="Llaveros">
-                        <img src="img/resina3.jpg" alt="Bandejas decorativas">
+                        <img src="img/resina1.jpg" alt="Cuadros abstractos" onclick="ampliarImagen(this)">
+                        <img src="img/resina2.jpg" alt="Llaveros" onclick="ampliarImagen(this)">
+                        <img src="img/resina3.jpg" alt="Bandejas decorativas" onclick="ampliarImagen(this)">
                     </div>
                     <div class="creador">
-                        <p>👨‍🎨 <strong>Luis Fernández</strong></p>
-                        <a href="https://instagram.com/luis_resina">@luis_resina</a>
-                        <a href="mailto:luis@kuikoart.com" class="boton-contacto">Contactar al artista</a>
+                        <p>👩‍🎨 <strong>ISABEL</strong></p>
+                        <a href="https://www.facebook.com/profile.php?id=100086028697000">Facebook de la artista</a>
+                        <a href="https://www.facebook.com/profile.php?id=100086028697000" class="boton-contacto">Contactar a la artista</a>
                     </div>
                 </div>
             </div>
@@ -487,6 +539,27 @@
                 }
             });
         });
+
+        // Funcionalidad para ampliar imágenes
+        const modal = document.getElementById("imagenModal");
+        const modalImg = document.getElementById("imagenAmpliada");
+        const span = document.getElementsByClassName("close")[0];
+
+        function ampliarImagen(img) {
+            modal.style.display = "block";
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+        }
+
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
-</html>
+    </html>
