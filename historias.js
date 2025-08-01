@@ -1,49 +1,61 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const abanicoContainer = document.querySelector('.abanico-container');
-    const tarjetas = document.querySelectorAll('.tarjeta-abierto');
-    const secciones = document.querySelectorAll('.seccion-contenido');
-    const btnsCerrar = document.querySelectorAll('.btn-cerrar');
-
-    // Animación inicial del abanico
-    setTimeout(() => {
-        abanicoContainer.classList.add('animado');
-    }, 500);
-
-    // Mostrar sección al hacer clic en una tarjeta
-    tarjetas.forEach(tarjeta => {
-        tarjeta.addEventListener('click', function() {
-            const seccionId = this.getAttribute('data-seccion');
-            const seccion = document.getElementById(seccionId);
+    // Actualizar año en el footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Menú móvil
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    menuToggle.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+        this.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+    });
+    
+    // Buscador de historias
+    const searchInput = document.getElementById('searchInput');
+    const searchForm = document.querySelector('.search-box');
+    
+    function searchHistorias() {
+        const term = searchInput.value.trim().toLowerCase();
+        const cards = document.querySelectorAll('.historia-card');
+        
+        cards.forEach(card => {
+            const text = card.textContent.toLowerCase();
+            card.style.display = text.includes(term) ? 'flex' : 'none';
             
-            // Activar estado de sección abierta
-            document.body.classList.add('seccion-activa');
-            
-            // Mostrar la sección correspondiente
-            secciones.forEach(s => s.classList.remove('mostrar'));
-            seccion.classList.add('mostrar');
-            
-            // Desplazarse a la sección
-            seccion.scrollIntoView({ behavior: 'smooth' });
+            if (text.includes(term)) {
+                card.style.animation = 'fadeInDown 0.5s ease';
+            }
+        });
+    }
+    
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        searchHistorias();
+    });
+    
+    searchInput.addEventListener('input', searchHistorias);
+    
+    // Efectos hover para tarjetas
+    const historiaCards = document.querySelectorAll('.historia-card');
+    
+    historiaCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-0.5rem)';
+            this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.15)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.08)';
         });
     });
-
-    // Cerrar sección
-    btnsCerrar.forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.body.classList.remove('seccion-activa');
-            secciones.forEach(s => s.classList.remove('mostrar'));
-            
-            // Regresar al inicio
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Lazy loading para imágenes
+    if ('loading' in HTMLImageElement.prototype) {
+        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+        lazyImages.forEach(img => {
+            img.src = img.dataset.src;
         });
-    });
-
-    // Cerrar sección con ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            document.body.classList.remove('seccion-activa');
-            secciones.forEach(s => s.classList.remove('mostrar'));
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    });
+    }
 });

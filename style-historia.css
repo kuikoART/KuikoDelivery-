@@ -1,0 +1,781 @@
+/* ============ VARIABLES Y RESET ============ */
+:root {
+    --primary: #5c3a21;
+    --secondary: #c45e3d;
+    --light: #f9f5f0;
+    --dark: #333;
+    --white: #fff;
+    --gray: #eee;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============ ESTRUCTURA GENERAL ============ */
+.main-header {
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-family: 'Merriweather', serif;
+    font-size: 1.8rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin-left: 1.5rem;
+}
+
+.nav-links a {
+    color: var(--dark);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--secondary);
+}
+
+.historias-vida {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    flex: 1;
+}
+
+/* ============ MENÚ DE SECCIONES ============ */
+.secciones-menu {
+    background-color: var(--primary);
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 5px;
+    position: sticky;
+    top: 70px;
+    z-index: 999;
+}
+
+.secciones-menu ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.secciones-menu a {
+    color: var(--white);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    transition: var(--transition);
+}
+
+.secciones-menu a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ============ ESTILOS COMUNES DE SECCIONES ============ */
+.seccion-contenido {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--gray);
+}
+
+.seccion-titulo {
+    color: var(--primary);
+    font-family: 'Merriweather', serif;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.seccion-titulo::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: var(--secondary);
+    margin-top: 0.5rem;
+}
+
+.texto-justificado {
+    text-align: justify;
+    line-height: 1.7;
+}
+
+.texto-justificado p {
+    margin-bottom: 1rem;
+}
+
+/* ============ PALABRA DIARIA ============ */
+.palabra-destacada {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    align-items: center;
+}
+
+.palabra-destacada > * {
+    flex: 1;
+    min-width: 300px;
+}
+
+.fecha {
+    color: var(--secondary);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.versiculo {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--primary);
+    margin: 1rem 0;
+    line-height: 1.5;
+    padding-left: 1rem;
+    border-left: 3px solid var(--secondary);
+}
+
+.referencia {
+    font-weight: 500;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.imagen-seccion {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.archivo-palabras {
+    margin-top: 2rem;
+}
+
+.palabras-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.palabra-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.palabra-fecha {
+    color: var(--secondary);
+    font-weight: 500;
+}
+
+.palabra-texto {
+    font-style: italic;
+    margin: 0.5rem 0;
+}
+
+.palabra-referencia {
+    font-weight: 500;
+}
+
+/* ============ EMPRENDEDORES ============ */
+.emprendedor-destacado {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    align-items: center;
+}
+
+.emprendedor-destacado > * {
+    flex: 1;
+    min-width: 300px;
+}
+
+.emprendedor-card {
+    background: var(--white);
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.emprendedor-card h4 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+/* ============ RELATOS PERSONALES ============ */
+.historias-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.historia-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    align-items: center;
+}
+
+.historia-card > * {
+    flex: 1;
+    min-width: 300px;
+}
+
+.historia-imagen {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.historia-card h3 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.historia-card blockquote {
+    font-style: italic;
+    margin: 1rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--secondary);
+}
+
+/* ============ RED DE SOLIDARIDAD ============ */
+.lema {
+    font-style: italic;
+    color: var(--secondary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.proyecto-destacado {
+    margin: 2rem 0;
+}
+
+.proyecto-destacado img {
+    margin-bottom: 1rem;
+}
+
+.proyecto-destacado ul {
+    margin: 1rem 0 1rem 2rem;
+}
+
+.proyecto-destacado li {
+    margin-bottom: 0.5rem;
+}
+
+/* ============ FORMULARIO ============ */
+.formulario-contacto {
+    max-width: 600px;
+    margin: 2rem auto;
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.btn-enviar {
+    background: var(--secondary);
+    color: var(--white);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    width: 100%;
+}
+
+.btn-enviar:hover {
+    background: var(--primary);
+}
+
+/* ============ FOOTER ============ */
+.main-footer {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 3rem 0 0;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 0 1.5rem;
+}
+
+.footer-section h3 {
+    font-family: 'Merriweather', serif;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.footer-section p,
+.footer-section a {
+    color: var(--white);
+}
+
+.footer-section a {
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-section a:hover {
+    color: var(--secondary);
+    padding-left: 5px;
+}
+
+.footer-section.about p {
+    margin-bottom: 1rem;
+}
+
+.footer-section.links ul {
+    list-style: none;
+}
+
+.footer-section.links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-section.contact p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* ============ CORRECCIÓN PARA ROTACIÓN ============ */
+@media screen and (orientation: landscape) and (max-width: 900px) {
+    body {
+        height: 100vh;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .main-header {
+        position: static;
+    }
+    
+    .secciones-menu {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    
+    .historias-vida {
+        min-height: auto;
+    }
+    
+    .seccion-contenido {
+        min-width: 800px;
+    }
+    
+    .formulario-contacto {
+        max-width: 90%;
+    }
+    
+    .historia-card, 
+    .emprendedor-card,
+    .palabra-card {
+        min-width: 700px;
+    }
+}
+
+/* ============ RESPONSIVE GENERAL ============ */
+@media (max-width: 768px) {
+    .main-nav {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .nav-links {
+        margin-top: 1rem;
+    }
+    
+    .nav-links li {
+        margin-left: 1rem;
+    }
+    
+    .seccion-titulo {
+        font-size: 1.8rem;
+    }
+    
+    .secciones-menu {
+        top: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .secciones-menu ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .palabra-destacada,
+    .emprendedor-destacado,
+    .historia-card {
+        flex-direction: column;
+    }
+    
+    .palabra-destacada > *,
+    .emprendedor-destacado > *,
+    .historia-card > * {
+        min-width: 100%;
+    }
+    
+    .formulario-contacto {
+        padding: 1.5rem;
+    }
+    
+    .seccion-titulo {
+        font-size: 1.6rem;
+    }
+}
+/* Estilos generales (consistentes con Historias de Vida) */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 1rem;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+}
+
+nav a.active {
+    color: #e67e22;
+    border-bottom: 2px solid #e67e22;
+}
+
+main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2, h3 {
+    color: #e67e22;
+}
+
+/* Estilos específicos del Catálogo */
+.catalogo-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.catalogo-intro p {
+    font-size: 1.1rem;
+}
+
+.categorias {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.filtros {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.filtros ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filtros a {
+    text-decoration: none;
+    color: #e67e22;
+    padding: 0.5rem 1rem;
+    border: 1px solid #e67e22;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.filtros a:hover {
+    background-color: #e67e22;
+    color: #fff;
+}
+
+.galeria {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.producto {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.producto:hover {
+    transform: translateY(-5px);
+}
+
+.producto img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.producto p {
+    padding: 1rem;
+    text-align: center;
+    margin: 0;
+}
+
+.contacto {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.contacto a {
+    color: #e67e22;
+    text-decoration: none;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+    margin-top: 2rem;
+}
+/* Estilos para el Catálogo Interactivo */
+.categorias {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.tecnica {
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.toggle {
+    display: none;
+}
+
+.tecnica-titulo {
+    display: block;
+    padding: 1rem;
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.tecnica-titulo:hover {
+    background: linear-gradient(135deg, #d35400, #e67e22);
+}
+
+.icono {
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+.tecnica-contenido {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    background-color: #fff;
+}
+
+.toggle:checked + .tecnica-titulo + .tecnica-contenido {
+    max-height: 1000px; /* Ajusta según el contenido */
+}
+
+.descripcion {
+    padding: 1.5rem;
+    margin: 0;
+    font-style: italic;
+    color: #555;
+    border-bottom: 1px dashed #e67e22;
+}
+
+.galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.galeria img {
+    width: 100%;
+    border-radius: 5px;
+    transition: transform 0.3s;
+}
+
+.galeria img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+/* Fondo artístico (como Historias de Vida) */
+.fondo-artistico {
+    background: url('imagenes/fondo-textura.jpg') no-repeat center center fixed;
+    background-size: cover;
+    padding: 2rem;
+    border-radius: 15px;
+    position: relative;
+}
+
+.fondo-artistico::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    z-index: -1;
+}
+
+/* Títulos resaltados por técnica */
+.tecnica-titulo {
+    font-family: 'Playfair Display', serif; /* Opcional: fuente elegante */
+    letter-spacing: 1px;
+    position: relative;
+}
+
+/* Colores únicos por técnica */
+.filigrana { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
+.foamy { background: linear-gradient(135deg, #3498db, #2980b9); }
+.ceramica { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+.resina { background: linear-gradient(135deg, #1abc9c, #16a085); }
+
+/* Efecto de brillo al pasar el mouse */
+.tecnica-titulo:hover::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+    z-index: 0;
+}
