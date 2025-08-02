@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KuikoART - Tienda</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Estilos generales optimizados */
+        /* ===== VARIABLES Y RESET ===== */
         :root {
             --color-primario: #4b2a70;
             --color-secundario: #ff5722;
             --color-fondo: #f9f5ff;
             --color-texto: #333;
             --color-blanco: #fff;
+            --color-marron: #5c3a21;
+            --color-beige: #a67c52;
             --sombra: 0 3px 10px rgba(0,0,0,0.1);
+            --sombra-hover: 0 5px 15px rgba(0,0,0,0.2);
             --transicion: all 0.3s ease;
+            --radio-botones: 30px;
         }
         
         * {
@@ -32,60 +37,92 @@
             touch-action: manipulation;
         }
 
-        .header-container {
-            background-color: #000;
-            padding: 1rem 0;
-            text-align: center;
-        }
-
-        .header-container h1 {
-            color: var(--color-blanco);
-            margin: 0;
-            font-size: clamp(1.8rem, 4vw, 2.2rem);
-        }
-
-        /* Menú de navegación optimizado para touch */
-        nav {
-            background-color: var(--color-blanco);
+        /* ===== HERO/IMAGEN PRINCIPAL ===== */
+        .hero {
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 20px;
             box-shadow: var(--sombra);
-            padding: 1rem 0;
+            position: relative;
+            height: 400px;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(75, 42, 112, 0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .hero-overlay h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-overlay p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* ===== MENÚ DE NAVEGACIÓN ===== */
+        .botones {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px 10px;
+            background: var(--color-primario);
+            margin-bottom: 20px;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            max-width: 800px;
-        }
-
-        nav a {
+        .botones a {
+            color: white;
             text-decoration: none;
-            color: var(--color-blanco);
-            background: var(--color-primario);
-            padding: 0.7rem 1.2rem;
-            border-radius: 25px;
+            padding: 12px 25px;
+            border-radius: var(--radio-botones);
+            background: var(--color-secundario);
             font-weight: bold;
-            transition: var(--transicion);
-            display: inline-block;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
             text-align: center;
-            white-space: nowrap;
-            font-size: clamp(0.8rem, 2vw, 1rem);
+            min-width: 160px;
+            transition: var(--transicion);
+            box-shadow: var(--sombra);
             -webkit-tap-highlight-color: transparent;
         }
 
-        nav a:active {
-            transform: scale(0.95);
+        .botones a:hover, .botones a.active {
+            background: #e64a19;
+            transform: translateY(-3px);
+            box-shadow: var(--sombra-hover);
         }
 
-        /* Filtros de categoría con mejor feedback táctil */
+        .botones a:active {
+            transform: translateY(0);
+        }
+
+        /* ===== FILTROS DE CATEGORÍA ===== */
         .filtros {
             display: flex;
             flex-wrap: wrap;
@@ -94,6 +131,9 @@
             padding: 1rem;
             background: #f0e6ff;
             margin-bottom: 2rem;
+            position: sticky;
+            top: 70px;
+            z-index: 90;
         }
 
         .filtro-btn {
@@ -117,7 +157,7 @@
             color: var(--color-blanco);
         }
 
-        /* Grid de productos optimizado para touch */
+        /* ===== GRID DE PRODUCTOS ===== */
         .productos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -134,11 +174,13 @@
             box-shadow: var(--sombra);
             transition: var(--transicion);
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .producto-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: var(--sombra-hover);
         }
 
         .producto-img {
@@ -149,7 +191,10 @@
         }
 
         .producto-info {
-            padding: 1rem;
+            padding: 1.2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .producto-titulo {
@@ -179,12 +224,19 @@
             color: #666;
             margin: 0.5rem 0 1rem 0;
             line-height: 1.4;
+            flex-grow: 1;
         }
 
         .producto-disponibilidad {
             font-size: 0.8rem;
             color: #4CAF50;
             margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .producto-disponibilidad i {
+            margin-right: 5px;
         }
 
         .cantidad-selector {
@@ -205,6 +257,7 @@
             align-items: center;
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
+            transition: var(--transicion);
         }
 
         .cantidad-btn:active {
@@ -239,6 +292,10 @@
             transition: var(--transicion);
             font-size: 1rem;
             -webkit-tap-highlight-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .add-to-cart:active {
@@ -249,7 +306,58 @@
             background: #5d3a8a;
         }
 
-        /* Carrito flotante optimizado para móviles */
+        /* ===== SLIDER DE LOGOS ===== */
+        .logos-slider {
+            background: linear-gradient(135deg, #2d3436 0%, #1a1a1a 100%);
+            padding: 50px 0;
+            margin: 40px 0;
+            overflow: hidden;
+            border-top: 3px solid var(--color-secundario);
+            border-bottom: 3px solid var(--color-secundario);
+        }
+
+        .slider-container {
+            width: 100%;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .slider-track {
+            display: flex;
+            gap: 60px;
+            animation: scroll 20s linear infinite;
+            will-change: transform;
+        }
+
+        .slider-track img {
+            height: 85px;
+            width: auto;
+            object-fit: contain;
+            opacity: 0.92;
+            transition: all 0.4s;
+            border-radius: 12px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .slider-track img:hover {
+            opacity: 1;
+            transform: scale(1.15);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 6px 12px rgba(0, 0, 0, 0.3),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ===== CARRITO FLOTANTE ===== */
         .carrito-flotante {
             position: fixed;
             bottom: 30px;
@@ -294,7 +402,7 @@
             font-weight: bold;
         }
 
-        /* Modal del carrito mejorado */
+        /* ===== MODAL DEL CARRITO ===== */
         .carrito-modal {
             display: none;
             position: fixed;
@@ -493,6 +601,10 @@
             text-align: center;
             font-size: 0.9rem;
             -webkit-tap-highlight-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .btn-pedido:active {
@@ -517,7 +629,7 @@
             background: #5d3a8a;
         }
 
-        /* Notificaciones mejoradas */
+        /* ===== NOTIFICACIONES ===== */
         .notificacion {
             position: fixed;
             bottom: 20px;
@@ -551,19 +663,57 @@
             font-weight: bold;
         }
 
-        /* Responsive mejorado */
+        /* ===== PIE DE PÁGINA ===== */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--color-primario);
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        .footer a {
+            color: #f5e9e0;
+            text-decoration: none;
+            transition: color 0.3s;
+            margin: 0 10px;
+        }
+
+        .footer a:hover {
+            color: var(--color-secundario);
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .productos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .hero {
+                height: 350px;
+            }
+            
+            .hero-overlay h1 {
+                font-size: 2.5rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .productos-grid {
                 grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
                 gap: 1.5rem;
             }
             
-            nav ul {
-                gap: 6px;
+            .botones {
+                gap: 8px;
             }
             
-            nav a {
-                padding: 0.6rem 0.8rem;
+            .botones a {
+                padding: 10px 15px;
+                min-width: 120px;
+                font-size: 0.9rem;
             }
             
             .carrito-contenido {
@@ -577,6 +727,22 @@
             .btn-pedido {
                 width: 100%;
             }
+            
+            .hero {
+                height: 300px;
+            }
+            
+            .hero-overlay h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-overlay p {
+                font-size: 1rem;
+            }
+            
+            .filtros {
+                top: 60px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -589,6 +755,7 @@
             .filtros {
                 padding: 0.8rem;
                 gap: 6px;
+                top: 55px;
             }
             
             .filtro-btn {
@@ -620,9 +787,36 @@
                 margin-top: 0.5rem;
                 flex-basis: 100%;
             }
+            
+            .hero {
+                height: 250px;
+            }
+            
+            .hero-overlay h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-overlay p {
+                font-size: 0.9rem;
+            }
+            
+            .botones {
+                gap: 6px;
+                padding: 10px 5px;
+            }
+            
+            .botones a {
+                padding: 8px 10px;
+                min-width: 100px;
+                font-size: 0.8rem;
+            }
+            
+            .slider-track img {
+                height: 65px;
+            }
         }
 
-        /* Animaciones */
+        /* ===== ANIMACIONES ===== */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -635,597 +829,195 @@
     </style>
 </head>
 <body>
-    <div class="header-container">
-        <h1>KuikoART</h1>
+    <!-- Hero Banner -->
+    <div class="hero">
+        <img src="https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?q=80&w=2070" alt="KuikoART - Arte y Artesanía" class="hero-img">
+        <div class="hero-overlay">
+            <h1>KuikoART</h1>
+            <p>Tu tienda de confianza para productos de calidad y tecnología avanzada</p>
+        </div>
     </div>
     
-    <nav>
-        <ul>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="tienda.html" class="active">Tienda</a></li>
-            <li><a href="talleres.html">Talleres</a></li>
-            <li><a href="historias.html">Historias de Vida</a></li>
-            <li><a href="catalogo.html">Catálogo</a></li>
-        </ul>
-    </nav>
-
-    <div class="filtros">
-        <button class="filtro-btn active" data-categoria="todos">Todos</button>
-        <button class="filtro-btn" data-categoria="tecnologia">Tecnología</button>
-        <button class="filtro-btn" data-categoria="hogar">Hogar</button>
-        <button class="filtro-btn" data-categoria="motores">Motores</button>
+    <!-- Menú de navegación -->
+    <div class="botones">
+        <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+        <a href="tienda.html" class="active"><i class="fas fa-store"></i> Tienda</a>
+        <a href="talleres.html"><i class="fas fa-paint-brush"></i> Talleres</a>
+        <a href="historias.html"><i class="fas fa-book"></i> Historias de Vida</a>
+        <a href="catalogo.html"><i class="fas fa-book-open"></i> Catálogo</a>
     </div>
 
+    <!-- Filtros de categorías -->
+    <div class="filtros">
+        <button class="filtro-btn active" data-categoria="todos"><i class="fas fa-th"></i> Todos</button>
+        <button class="filtro-btn" data-categoria="tecnologia"><i class="fas fa-laptop"></i> Tecnología</button>
+        <button class="filtro-btn" data-categoria="hogar"><i class="fas fa-home"></i> Hogar</button>
+        <button class="filtro-btn" data-categoria="motores"><i class="fas fa-car"></i> Motores</button>
+    </div>
+
+    <!-- Grid de productos -->
     <div class="productos-grid">
         <!-- Producto 1 -->
         <div class="producto-card" data-categoria="tecnologia">
-            <img src="tienda1.jpg" alt="ECO FLOW DELTA 2" class="producto-img">
+            <img src="https://images.unsplash.com/photo-1606220588913-0d9c3385fd5a?q=80&w=2070" alt="ECO FLOW DELTA 2" class="producto-img">
             <div class="producto-info">
                 <h3 class="producto-titulo">ECO FLOW DELTA 2</h3>
                 <p class="producto-precio">$1100 USD</p>
                 <p class="metodo-pago">Transferencia disponible / Efectivo</p>
                 <p class="producto-desc">Generador portátil de energía con alta capacidad</p>
-                <p class="producto-disponibilidad">Disponible: 3 unidades</p>
+                <p class="producto-disponibilidad"><i class="fas fa-check-circle"></i> Disponible: 3 unidades</p>
                 <div class="cantidad-selector">
                     <button class="cantidad-btn minus">-</button>
                     <input type="number" value="1" min="1" class="cantidad-input">
                     <button class="cantidad-btn plus">+</button>
                 </div>
-                <button class="add-to-cart">Añadir al carrito</button>
+                <button class="add-to-cart"><i class="fas fa-cart-plus"></i> Añadir al carrito</button>
             </div>
         </div>
 
         <!-- Producto 2 -->
         <div class="producto-card" data-categoria="hogar">
-            <img src="tienda2.jpg" alt="GRIFO GIRATORIO" class="producto-img">
+            <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=1964" alt="GRIFO GIRATORIO" class="producto-img">
             <div class="producto-info">
                 <h3 class="producto-titulo">GRIFO GIRATORIO</h3>
                 <p class="producto-precio">$1500 CUP</p>
                 <p class="producto-desc">Grifo de cocina con sistema giratorio 360°</p>
-                <p class="producto-disponibilidad">Disponible: 5 unidades</p>
+                <p class="producto-disponibilidad"><i class="fas fa-check-circle"></i> Disponible: 5 unidades</p>
                 <div class="cantidad-selector">
                     <button class="cantidad-btn minus">-</button>
                     <input type="number" value="1" min="1" class="cantidad-input">
                     <button class="cantidad-btn plus">+</button>
                 </div>
-                <button class="add-to-cart">Añadir al carrito</button>
+                <button class="add-to-cart"><i class="fas fa-cart-plus"></i> Añadir al carrito</button>
             </div>
         </div>
 
         <!-- Producto 3 -->
         <div class="producto-card" data-categoria="hogar">
-            <img src="tienda3.jpg" alt="COCINA INFRAROJA UNZUKI" class="producto-img">
+            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053" alt="COCINA INFRAROJA UNZUKI" class="producto-img">
             <div class="producto-info">
                 <h3 class="producto-titulo">COCINA INFRAROJA UNZUKI</h3>
                 <p class="producto-precio">$22000 CUP</p>
                 <p class="producto-desc">Cocina infrarroja de alta eficiencia energética</p>
-                <p class="producto-disponibilidad">Disponible: 2 unidades</p>
+                <p class="producto-disponibilidad"><i class="fas fa-check-circle"></i> Disponible: 2 unidades</p>
                 <div class="cantidad-selector">
                     <button class="cantidad-btn minus">-</button>
                     <input type="number" value="1" min="1" class="cantidad-input">
                     <button class="cantidad-btn plus">+</button>
                 </div>
-                <button class="add-to-cart">Añadir al carrito</button>
+                <button class="add-to-cart"><i class="fas fa-cart-plus"></i> Añadir al carrito</button>
             </div>
         </div>
 
         <!-- Producto 4 -->
         <div class="producto-card" data-categoria="motores">
-            <img src="tienda4.jpg" alt="MOTOR SÚPER TUCAN CG 250cc" class="producto-img">
+            <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?q=80&w=2025" alt="MOTOR SÚPER TUCAN CG 250cc" class="producto-img">
             <div class="producto-info">
                 <h3 class="producto-titulo">MOTOR SÚPER TUCAN CG 250cc</h3>
-                <p class="producto-precio">$3500 USD</p>
+                <p class="producto-precio">$350 USD</p>
                 <p class="metodo-pago">Transferencia disponible / Efectivo</p>
                 <p class="producto-desc">Motor de alta potencia para motocicletas</p>
-                <p class="producto-disponibilidad">Disponible: 1 unidad</p>
+                <p class="producto-disponibilidad"><i class="fas fa-check-circle"></i> Disponible: 1 unidad</p>
                 <div class="cantidad-selector">
                     <button class="cantidad-btn minus">-</button>
                     <input type="number" value="1" min="1" class="cantidad-input">
                     <button class="cantidad-btn plus">+</button>
                 </div>
-                <button class="add-to-cart">Añadir al carrito</button>
+                <button class="add-to-cart"><i class="fas fa-cart-plus"></i> Añadir al carrito</button>
             </div>
         </div>
 
         <!-- Producto 5 -->
         <div class="producto-card" data-categoria="hogar">
-            <img src="tienda5.jpg" alt="PLATEROS DE 12 DIVISIONES" class="producto-img">
+            <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=2070" alt="PLATEROS DE 12 DIVISIONES" class="producto-img">
             <div class="producto-info">
                 <h3 class="producto-titulo">PLATEROS DE 12 DIVISIONES</h3>
                 <p class="producto-precio">$1800 CUP</p>
                 <p class="producto-desc">Plateros organizadores con 12 divisiones</p>
-                <p class="producto-disponibilidad">Disponible: 8 unidades</p>
+                <p class="producto-disponibilidad"><i class="fas fa-check-circle"></i> Disponible: 8 unidades</p>
                 <div class="cantidad-selector">
                     <button class="cantidad-btn minus">-</button>
                     <input type="number" value="1" min="1" class="cantidad-input">
                     <button class="cantidad-btn plus">+</button>
                 </div>
-                <button class="add-to-cart">Añadir al carrito</button>
+                <button class="add-to-cart"><i class="fas fa-cart-plus"></i> Añadir al carrito</button>
             </div>
         </div>
 
         <!-- Producto 6 -->
         <div class="producto-card" data-categoria="hogar">
-            <img src="tienda6.jpg" alt="CORTINA PARA BAÑO" class="producto-img">
+            <img src="https://images.unsplash.com/photo-1600563438938-a9e27241bbb4?q=80&w=2070" alt="CORTINA PARA BAÑO" class="producto-img">
             <div class="producto-info">
                 <h3 class="producto-titulo">CORTINA PARA BAÑO</h3>
                 <p class="producto-precio">$2800 CUP</p>
                 <p class="producto-desc">Cortina resistente al agua para baño</p>
-                <p class="producto-disponibilidad">Disponible: 4 unidades</p>
+                <p class="producto-disponibilidad"><i class="fas fa-check-circle"></i> Disponible: 4 unidades</p>
                 <div class="cantidad-selector">
                     <button class="cantidad-btn minus">-</button>
                     <input type="number" value="1" min="1" class="cantidad-input">
                     <button class="cantidad-btn plus">+</button>
                 </div>
-                <button class="add-to-cart">Añadir al carrito</button>
+                <button class="add-to-cart"><i class="fas fa-cart-plus"></i> Añadir al carrito</button>
             </div>
         </div>
 
-        <!-- Producto 7 -->
+        <!-- Producto 11 -->
         <div class="producto-card" data-categoria="hogar">
-            <img src="tienda7.jpg" alt="JARRA DE 2 LITROS" class="producto-img">
+            <img src="https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?q=80&w=2070" alt="Olla Multifuncional WYNWOOD 6L" class="producto-img" />
             <div class="producto-info">
-                <h3 class="producto-titulo">JARRA DE 2 LITROS</h3>
-                <p class="producto-precio">$2000 CUP</p>
-                <p class="producto-desc">Jarra de vidrio con capacidad de 2 litros</p>
-                <p class="producto-disponibilidad">Disponible: 6 unidades</p>
+                <h3 class="producto-titulo">Olla Multifuncional WYNWOOD 6L</h3>
+                <p class="producto-precio">63 USD</p>
+                <p class="producto-desc">Olla eléctrica multipropósito con funciones inteligentes</p>
+                <p class="producto-disponibilidad"><i class="fas fa-check-circle"></i> Disponible: 2 unidades</p>
                 <div class="cantidad-selector">
                     <button class="cantidad-btn minus">-</button>
-                    <input type="number" value="1" min="1" class="cantidad-input">
+                    <input type="number" value="1" min="1" class="cantidad-input" />
                     <button class="cantidad-btn plus">+</button>
                 </div>
+                <button class="add-to-cart"><i class="fas fa-cart-plus"></i> Añadir al carrito</button>
+            </div>
+        </div>
 
-                <button class="add-to-cart">Añadir al carrito</button>
+        <!-- Producto 12 -->
+        <div class="producto-card" data-categoria="hogar">
+            <img src="https://images.unsplash.com/photo-1600607687681-1c33d6c4f8ee?q=80&w=2070" alt="Calentador de Agua WYNWOOD 50L" class="producto-img" />
+            <div class="producto-info">
+                <h3 class="producto-titulo">Calentador de Agua WYNWOOD 50L</h3>
+                <p class="producto-precio">290 USD</p>
+                <p class="producto-desc">Calentador eléctrico con capacidad para 50 litros</p>
+                <p class="producto-disponibilidad"><i class="fas fa-check-circle"></i> Disponible: 2 unidades</p>
+                <div class="cantidad-selector">
+                    <button class="cantidad-btn minus">-</button>
+                    <input type="number" value="1" min="1" class="cantidad-input" />
+                    <button class="cantidad-btn plus">+</button>
+                </div>
+                <button class="add-to-cart"><i class="fas fa-cart-plus"></i> Añadir al carrito</button>
             </div>
         </div>
     </div>
 
-<!-- Producto 11 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda11.jpg" alt="Olla Multifuncional WYNWOOD 6L" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Olla Multifuncional WYNWOOD 6L</h3>
-    <p class="producto-precio">63 USD</p>
-    <p class="producto-desc">Olla eléctrica multipropósito con funciones inteligentes</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
+    <!-- Slider de logos -->
+    <section class="logos-slider">
+        <div class="slider-container">
+            <div class="slider-track">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/2560px-Samsung_Logo.svg.png" alt="Samsung">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/LG_symbol_%282015%29.svg/2048px-LG_symbol_%282015%29.svg.png" alt="LG">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Whirlpool_Corporation_logo_2015.svg/2560px-Whirlpool_Corporation_logo_2015.svg.png" alt="Whirlpool">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Electrolux_logo.svg/2560px-Electrolux_logo.svg.png" alt="Electrolux">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Philips_wordmark.svg/1280px-Philips_wordmark.svg.png" alt="Philips">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Bosch-logo.svg/2560px-Bosch-logo.svg.png" alt="Bosch">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Mabe_logo.svg/1280px-Mabe_logo.svg.png" alt="Mabe">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Bosch-logo.svg/2560px-Bosch-logo.svg.png" alt="Bosch">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Electrolux_logo.svg/2560px-Electrolux_logo.svg.png" alt="Electrolux">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Philips_wordmark.svg/1280px-Philips_wordmark.svg.png" alt="Philips">
+            </div>
+        </div>
+    </section>
 
-<!-- Producto 12 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda12.jpg" alt="Calentador de Agua WYNWOOD 50L" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Calentador de Agua WYNWOOD 50L</h3>
-    <p class="producto-precio">290 USD</p>
-    <p class="producto-desc">Calentador eléctrico con capacidad para 50 litros</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 13 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda13.jpg" alt="Calentador de Agua WYNWOOD 80L" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Calentador de Agua WYNWOOD 80L</h3>
-    <p class="producto-precio">325 USD</p>
-    <p class="producto-desc">Calentador eléctrico de alta capacidad y eficiencia</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 15 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda15.jpg" alt="Nevera MILEXUS 16 pies (Congelación Seca)" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Nevera MILEXUS 16 pies (Congelación Seca)</h3>
-    <p class="producto-precio">Consultar</p>
-    <p class="producto-desc">Refrigerador con sistema de congelación seca</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-    <!-- Producto 16 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda16.jpg" alt="Cafetera Eléctrica MILEXUS ML-CM06AA" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Cafetera Eléctrica MILEXUS ML-CM06AA</h3>
-    <p class="producto-precio">45 USD</p>
-    <p class="producto-desc">Cafetera eléctrica compacta con diseño moderno</p>
-    <p class="producto-disponibilidad">Disponible: 4 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 17 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda17.jpg" alt="Smart TV ROYAL 43"" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Smart TV ROYAL 43"</h3>
-    <p class="producto-precio">Consultar</p>
-    <p class="producto-desc">Televisor Smart FHD con HDMI, Bluetooth y Wi-Fi</p>
-    <p class="producto-disponibilidad">Disponible: 3 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 18 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda18.jpg" alt="Estación de Energía TULIP 800Wh" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Estación de Energía TULIP 800Wh</h3>
-    <p class="producto-precio">550 USD</p>
-    <p class="producto-desc">Generador portátil recargable ideal para emergencias</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 19 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda19.jpg" alt="Aceite de Motor SINOPEC 10W-40 / 15W-40" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Aceite de Motor SINOPEC 10W-40 / 15W-40</h3>
-    <p class="producto-precio">Consultar</p>
-    <p class="producto-desc">Lubricante de alto rendimiento para motor</p>
-    <p class="producto-disponibilidad">Disponible: 5 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 20 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda20.jpg" alt="Calentador de Agua WYNWOOD 100L" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Calentador de Agua WYNWOOD 100L</h3>
-    <p class="producto-precio">370 USD</p>
-    <p class="producto-desc">Calentador eléctrico de gran capacidad</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 21 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda21.jpg" alt="Juego de Sartenes MILEXUS 5 piezas" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Juego de Sartenes MILEXUS 5 piezas</h3>
-    <p class="producto-precio">58 USD</p>
-    <p class="producto-desc">Set de cocina de aluminio para inducción</p>
-    <p class="producto-disponibilidad">Disponible: 4 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 22 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda22.jpg" alt="Smart TV WYNWOOD 50"" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Smart TV WYNWOOD 50"</h3>
-    <p class="producto-precio">490 USD</p>
-    <p class="producto-desc">Televisor inteligente con cajita interna</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 23 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda23.jpg" alt="Lavadora Semiautomática MILEXUS 7kg" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Lavadora Semiautomática MILEXUS 7kg</h3>
-    <p class="producto-precio">225 USD</p>
-    <p class="producto-desc">Lavadora práctica de doble tina</p>
-    <p class="producto-disponibilidad">Disponible: 3 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 24 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda24.jpg" alt="Smart TV MILEXUS 40"" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Smart TV MILEXUS 40"</h3>
-    <p class="producto-precio">290 USD</p>
-    <p class="producto-desc">TV Google Smart con pantalla FHD</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 25 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda25.jpg" alt="Smart TV MILEXUS 32"" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Smart TV MILEXUS 32"</h3>
-    <p class="producto-precio">205 USD</p>
-    <p class="producto-desc">TV inteligente con sistema Google integrado</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 26 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda26.jpg" alt="Cocina con horno SAMSUNG 6 quemadores" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Cocina con horno SAMSUNG 6 quemadores</h3>
-    <p class="producto-precio">Consultar</p>
-    <p class="producto-desc">Estufa de gas de acero inoxidable</p>
-    <p class="producto-disponibilidad">Disponible: 1 unidad</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 27 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda27.jpg" alt="Olla Multifuncional MILEXUS 6L" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Olla Multifuncional MILEXUS 6L</h3>
-    <p class="producto-precio">75 USD</p>
-    <p class="producto-desc">Olla eléctrica programable de gran capacidad</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 28 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda28.jpg" alt="Cocina de Gas con horno WYNWOOD" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Cocina de Gas con horno WYNWOOD</h3>
-    <p class="producto-precio">275 USD</p>
-    <p class="producto-desc">Estufa con horno sin magneto</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 29 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda29.jpg" alt="Cocina Infrarrojo JMD 3500W" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Cocina Infrarrojo JMD 3500W</h3>
-    <p class="producto-precio">65 USD</p>
-    <p class="producto-desc">Cocina infrarroja de alta eficiencia</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 30 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda30.jpg" alt="Lavadora Automática MILEXUS 10kg" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Lavadora Automática MILEXUS 10kg</h3>
-    <p class="producto-precio">810 USD</p>
-    <p class="producto-desc">Con secador a vapor y múltiples funciones</p>
-    <p class="producto-disponibilidad">Disponible: 1 unidad</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 31 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda31.jpg" alt="Batería de Litio K-VOLT 72V 35A" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Batería de Litio K-VOLT 72V 35A</h3>
-    <p class="producto-precio">750 USD</p>
-    <p class="producto-desc">Ideal para motorinas eléctricas</p>
-    <p class="producto-disponibilidad">Disponible: 1 unidad</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 32 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda32.jpg" alt="Frío WYNWOOD 18.6 pies" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Frío WYNWOOD 18.6 pies</h3>
-    <p class="producto-precio">1200 USD</p>
-    <p class="producto-desc">Refrigerador tipo side by side</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 33 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda33.jpg" alt="Frío WYNWOOD 3.6 pies (oferta)" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Frío WYNWOOD 3.6 pies (oferta)</h3>
-    <p class="producto-precio">255 USD</p>
-    <p class="producto-desc">Nevera compacta eficiente y económica</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 34 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda34.jpg" alt="Nevera MILEXUS 13.1 pies" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Nevera MILEXUS 13.1 pies</h3>
-    <p class="producto-precio">590 USD</p>
-    <p class="producto-desc">Gran capacidad con congelador inferior</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 35 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda35.jpg" alt="Lavadora Semiautomática WYNWOOD 7kg" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Lavadora Semiautomática WYNWOOD 7kg</h3>
-    <p class="producto-precio">220 USD</p>
-    <p class="producto-desc">Doble tina con sistema Air Dry</p>
-    <p class="producto-disponibilidad">Disponible: 2 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 36 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda36.jpg" alt="Olla Arrocera WYNWOOD 1.8L" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Olla Arrocera WYNWOOD 1.8L</h3>
-    <p class="producto-precio">45 USD</p>
-    <p class="producto-desc">Recubrimiento antiadherente, fácil de usar</p>
-    <p class="producto-disponibilidad">Disponible: 3 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-
-<!-- Producto 37 -->
-<div class="producto-card" data-categoria="hogar">
-  <img src="tienda37.jpg" alt="Cocina de Gas OASIS 2 hornillas" class="producto-img" />
-  <div class="producto-info">
-    <h3 class="producto-titulo">Cocina de Gas OASIS 2 hornillas</h3>
-    <p class="producto-precio">Consultar</p>
-    <p class="producto-desc">Cocina de vidrio templado con estilo elegante</p>
-    <p class="producto-disponibilidad">Disponible: 3 unidades</p>
-    <div class="cantidad-selector">
-      <button class="cantidad-btn minus">-</button>
-      <input type="number" value="1" min="1" class="cantidad-input" />
-      <button class="cantidad-btn plus">+</button>
-    </div>
-    <button class="add-to-cart">Añadir al carrito</button>
-  </div>
-</div>
-    
     <!-- Carrito flotante -->
     <div class="carrito-flotante" id="carritoBtn">
         <div class="carrito-icono">
-            🛒
+            <i class="fas fa-shopping-cart"></i>
             <span class="carrito-contador">0</span>
         </div>
     </div>
@@ -1234,7 +1026,7 @@
     <div class="carrito-modal" id="carritoModal">
         <div class="carrito-contenido">
             <div class="carrito-header">
-                <h2>Tu Carrito</h2>
+                <h2><i class="fas fa-shopping-cart"></i> Tu Carrito</h2>
                 <button class="carrito-cerrar" id="cerrarCarrito">&times;</button>
             </div>
             <div class="carrito-body" id="carritoItems">
@@ -1244,7 +1036,7 @@
                 Total: <span id="carritoTotal">$0.00</span>
             </div>
             <div class="formulario-pedido">
-                <h3>Información del Cliente</h3>
+                <h3><i class="fas fa-user"></i> Información del Cliente</h3>
                 <div class="form-group">
                     <label for="nombre">Nombre completo</label>
                     <input type="text" id="nombre" placeholder="Ej: Ana Pérez García">
@@ -1266,7 +1058,6 @@
                     <input type="email" id="email" placeholder="Ej: cliente@ejemplo.com">
                 </div>
                 
-                <!-- Nuevos campos agregados -->
                 <div class="form-group">
                     <label for="metodo-pago">Método de Pago</label>
                     <select id="metodo-pago">
@@ -1294,12 +1085,22 @@
                 </div>
                 
                 <div class="botones-pedido">
-                    <button class="btn-pedido btn-whatsapp" id="enviarWhatsapp">Enviar por WhatsApp</button>
-                    <button class="btn-pedido btn-email" id="enviarEmail">Enviar por Email</button>
+                    <button class="btn-pedido btn-whatsapp" id="enviarWhatsapp"><i class="fab fa-whatsapp"></i> Enviar por WhatsApp</button>
+                    <button class="btn-pedido btn-email" id="enviarEmail"><i class="fas fa-envelope"></i> Enviar por Email</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>KuikoART - Todos los derechos reservados &copy; 2023</p>
+        <p>
+            <a href="politica-privacidad.html">Política de Privacidad</a> | 
+            <a href="terminos.html">Términos de Uso</a> | 
+            <a href="contacto.html">Contacto</a>
+        </p>
+    </footer>
 
     <script>
         // Variables globales
@@ -1333,7 +1134,7 @@
         
         // Actualizar ID del pedido en los botones
         function actualizarIDPedido() {
-            enviarWhatsapp.textContent = `Enviar por WhatsApp (${pedidoID})`;
+            enviarWhatsapp.innerHTML = `<i class="fab fa-whatsapp"></i> Enviar por WhatsApp (${pedidoID})`;
         }
         
         // Mostrar/ocultar info de domicilio
@@ -1345,7 +1146,7 @@
         carritoBtn.addEventListener('click', abrirCarrito);
         cerrarCarrito.addEventListener('click', cerrarModal);
         
-        // Filtrar productos con mejor manejo táctil
+        // Filtrar productos
         filtroBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 // Feedback táctil
@@ -1382,7 +1183,7 @@
             });
         });
         
-        // Selector de cantidad con mejor manejo táctil
+        // Selector de cantidad
         productos.forEach(producto => {
             const minusBtn = producto.querySelector('.minus');
             const plusBtn = producto.querySelector('.plus');
@@ -1428,7 +1229,7 @@
             });
         });
         
-        // Añadir al carrito con mejor manejo táctil
+        // Añadir al carrito
         addToCartBtns.forEach((btn, index) => {
             btn.addEventListener('click', () => {
                 // Feedback táctil
@@ -1518,7 +1319,7 @@
                             ${item.metodoPago ? `<div class="carrito-item-precio" style="color: var(--color-secundario); font-size: 0.8rem;">${item.metodoPago}</div>` : ''}
                             <div class="carrito-item-precio">$${item.precio.toFixed(2)} x ${item.cantidad} = $${subtotal.toFixed(2)}</div>
                         </div>
-                        <button class="carrito-item-eliminar" data-index="${index}" aria-label="Eliminar producto">🗑️</button>
+                        <button class="carrito-item-eliminar" data-index="${index}" aria-label="Eliminar producto"><i class="fas fa-trash"></i></button>
                     </div>
                 `;
                 
@@ -1566,7 +1367,7 @@
             }, 3000);
         }
         
-        // Enviar pedido por WhatsApp con mejor formato
+        // Enviar pedido por WhatsApp
         enviarWhatsapp.addEventListener('click', () => {
             if (carrito.length === 0) {
                 mostrarNotificacion('El carrito está vacío', pedidoID);
@@ -1617,13 +1418,13 @@
             window.open(`https://wa.me/5353086152?text=${mensaje}`, '_blank');
             
             // Feedback visual
-            enviarWhatsapp.textContent = 'Enviando...';
+            enviarWhatsapp.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
             setTimeout(() => {
-                enviarWhatsapp.textContent = `Enviar por WhatsApp (${pedidoID})`;
+                actualizarIDPedido();
             }, 1500);
         });
         
-        // Enviar pedido por Email con mejor formato
+        // Enviar pedido por Email
         enviarEmail.addEventListener('click', () => {
             if (carrito.length === 0) {
                 mostrarNotificacion('El carrito está vacío', pedidoID);
@@ -1678,9 +1479,9 @@
             const cuerpoCodificado = encodeURIComponent(cuerpo);
             
             // Feedback visual
-            enviarEmail.textContent = 'Preparando...';
+            enviarEmail.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando...';
             setTimeout(() => {
-                enviarEmail.textContent = 'Enviar por Email';
+                enviarEmail.innerHTML = '<i class="fas fa-envelope"></i> Enviar por Email';
                 window.location.href = `mailto:cmfaponte@gmail.com?subject=${asuntoCodificado}&body=${cuerpoCodificado}`;
             }, 500);
         });
@@ -1696,4 +1497,4 @@
         actualizarIDPedido();
     </script>
 </body>
-</html>
+    </html>
